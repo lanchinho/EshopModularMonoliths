@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Ordering;
+﻿namespace Ordering;
 
 public static class OrderingModule
 {
@@ -9,5 +6,10 @@ public static class OrderingModule
 		IConfiguration configuration)
 	{
 		return services;
+	}
+
+	public static IApplicationBuilder UseOrderingModule(this IApplicationBuilder app)
+	{
+		return app;
 	}
 }

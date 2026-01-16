@@ -1,6 +1,4 @@
-﻿
-
-namespace Catalog;
+﻿namespace Catalog;
 
 public static class CatalogModule
 {

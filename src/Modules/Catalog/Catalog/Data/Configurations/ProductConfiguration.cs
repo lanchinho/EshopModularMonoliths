@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Catalog.Data.Configurations;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.ToTable("Products", "catalog");
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Name).HasMaxLength(50).IsRequired();
         builder.Property(p => p.Category).IsRequired();

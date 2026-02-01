@@ -16,7 +16,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_eshopdb:/var/lib/postgres/data
+      - postgres_eshopdb:/var/lib/postgres/
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d EShopDb"]
       interval: 10s

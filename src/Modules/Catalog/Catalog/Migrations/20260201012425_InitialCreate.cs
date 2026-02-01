@@ -12,7 +12,9 @@ namespace Catalog.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(name: "catalog");
+            migrationBuilder.EnsureSchema(
+                name: "catalog");
+
             migrationBuilder.CreateTable(
                 name: "Products",
                 schema: "catalog",
@@ -39,7 +41,8 @@ namespace Catalog.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Products",
+                schema: "catalog");
         }
     }
 }

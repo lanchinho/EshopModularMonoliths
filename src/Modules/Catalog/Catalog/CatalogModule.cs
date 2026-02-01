@@ -1,26 +1,31 @@
-﻿namespace Catalog;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+
+namespace Catalog;
 
 public static class CatalogModule
 {
-    public static IServiceCollection AddCatalogModule(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        var connectionString = configuration.GetConnectionString("Database");
+	public static IServiceCollection AddCatalogModule(this IServiceCollection services,
+		IConfiguration configuration)
+	{
+		var connectionString = configuration.GetConnectionString("Database");
 
-        services.AddDbContext<CatalogDbContext>(options =>
-        {
-            options.AddInterceptors(new AuditableEntityInterceptor());
-            options.UseNpgsql(connectionString);
-        });
+		services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+		services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
-        services.AddScoped<IDataSeeder, CatalogDataSeeder>();
+		services.AddDbContext<CatalogDbContext>((sp, options) =>
+		{
+			options.AddInterceptors(sp.GetService<ISaveChangesInterceptor>());
+			options.UseNpgsql(connectionString);
+		});
 
-        return services;
-    }
+		services.AddScoped<IDataSeeder, CatalogDataSeeder>();
 
-    public static IApplicationBuilder UseCatalogModule(this IApplicationBuilder app)
-    {
-        app.UseMigration<CatalogDbContext>();
-        return app;
-    }
+		return services;
+	}
+
+	public static IApplicationBuilder UseCatalogModule(this IApplicationBuilder app)
+	{
+		app.UseMigration<CatalogDbContext>();
+		return app;
+	}
 }

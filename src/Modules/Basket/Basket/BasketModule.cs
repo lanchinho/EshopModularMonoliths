@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shared.Data;
 using Shared.Data.Interceptors;
 
 namespace Basket;
@@ -21,9 +22,11 @@ public static class BasketModule
 
 		return services;
 	}
-	
+
 	public static IApplicationBuilder UseBasketModule(this IApplicationBuilder app)
 	{
+		app.UseMigration<BasketDbContext>();
+
 		return app;
 	}
 }

@@ -12,7 +12,7 @@ public static class CatalogModule
 		services.AddMediatR(config =>
 		{
 			config.RegisterServicesFromAssembly(assembly);
-			config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+			config.AddOpenBehaviors([typeof(ValidationBehavior<,>), typeof(LoggingBehavior<,>)]);
 		})
 		.AddValidatorsFromAssembly(assembly);
 

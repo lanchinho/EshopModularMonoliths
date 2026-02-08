@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using Shared.Exceptions.Handler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,9 @@ builder.Services
 	.AddCatalogModule(builder.Configuration)
 	.AddBasketModule(builder.Configuration)
 	.AddOrderingModule(builder.Configuration)
-	.AddOpenApi();
+	.AddOpenApi()
+	.AddExceptionHandler<CustomexceptionHandler>()
+	.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -26,5 +29,7 @@ app
 	.UseCatalogModule()
 	.UseBasketModule()
 	.UseOrderingModule();
+
+app.UseExceptionHandler();
 
 app.Run();

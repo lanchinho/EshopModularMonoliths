@@ -20,7 +20,7 @@ internal class DeleteProductHandler(CatalogDbContext dbContext)
 	{
 		var productToDelete = await dbContext.Products
 			.FindAsync(command.ProductId, cancellationToken)
-			?? throw new Exception($"Product not found: {command.ProductId}");
+			?? throw new ProductNotFoundException(command.ProductId);
 
 		dbContext.Products.Remove(productToDelete);
 		var result = await dbContext.SaveChangesAsync(cancellationToken) > 0;

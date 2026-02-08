@@ -4,7 +4,7 @@ builder.Host.UseSerilog((context, config) =>
 	config.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
-	.AddCarterWithAssemblies(typeof(CatalogModule).Assembly)
+	.AddCarterWithAssemblies(typeof(CatalogModule).Assembly, typeof(BasketModule).Assembly)
 	.AddCatalogModule(builder.Configuration)
 	.AddBasketModule(builder.Configuration)
 	.AddOrderingModule(builder.Configuration)

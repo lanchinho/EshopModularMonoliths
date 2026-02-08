@@ -7,6 +7,11 @@ public static class CatalogModule
 	public static IServiceCollection AddCatalogModule(this IServiceCollection services,
 		IConfiguration configuration)
 	{
+		services.AddMediatR(config =>
+		{
+			config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+		});
+
 		var connectionString = configuration.GetConnectionString("Database");
 
 		services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();

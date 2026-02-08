@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shared.Behaviors;
 
 namespace Catalog;
 
@@ -7,10 +8,13 @@ public static class CatalogModule
 	public static IServiceCollection AddCatalogModule(this IServiceCollection services,
 		IConfiguration configuration)
 	{
+		var assembly = Assembly.GetExecutingAssembly();
 		services.AddMediatR(config =>
 		{
-			config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-		});
+			config.RegisterServicesFromAssembly(assembly);
+			config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+		})
+		.AddValidatorsFromAssembly(assembly);
 
 		var connectionString = configuration.GetConnectionString("Database");
 

@@ -18,3 +18,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Shared.CQRS;
 global using Shared.DDD;
 global using Shared.Exceptions;
+global using Basket.Data.Repository;

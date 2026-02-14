@@ -1,23 +1,16 @@
 ﻿namespace Basket.Basket.Features.DeleteBasket;
 
 public record DeleteBasketCommand(string UserName)
-	: ICommand<DeleteBasketResult>;
+    : ICommand<DeleteBasketResult>;
 
-public record DeleteBasketResult(bool IsSucess);
+public record DeleteBasketResult(bool IsSuccess);
 
-internal class DeleteBasketHandler(BasketDbContext context)
-	: ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
+internal class DeleteBasketHandler(IBasketRepository repository)
+    : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
 {
-	public async Task<DeleteBasketResult> Handle(DeleteBasketCommand command, CancellationToken cancellationToken)
-	{
-		var basketToBeDeleted = await context.ShoppingCarts
-			.AsNoTracking()
-			.FirstOrDefaultAsync(x => x.UserName == command.UserName, cancellationToken)
-			?? throw new BasketNotFoundException(command.UserName);
-
-		context.ShoppingCarts.Remove(basketToBeDeleted);
-		var result = await context.SaveChangesAsync(cancellationToken) > 0;
-
-		return new DeleteBasketResult(result);
-	}
+    public async Task<DeleteBasketResult> Handle(DeleteBasketCommand command, CancellationToken cancellationToken)
+    {
+        var result = await repository.DeleteBasket(command.UserName, cancellationToken);
+        return new DeleteBasketResult(IsSuccess: result);
+    }
 }

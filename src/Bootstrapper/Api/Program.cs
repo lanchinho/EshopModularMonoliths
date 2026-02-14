@@ -1,6 +1,3 @@
-using FluentValidation;
-using Shared.Behaviors;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) =>
@@ -12,12 +9,7 @@ var orderingAssembly = typeof(OrderingModule).Assembly;
 
 builder.Services
     .AddCarterWithAssemblies(catalogAssembly, basketAssembly)
-    .AddMediatR(config =>
-    {
-        config.RegisterServicesFromAssemblies(catalogAssembly, basketAssembly);
-        config.AddOpenBehaviors([typeof(ValidationBehavior<,>), typeof(LoggingBehavior<,>)]);
-    })
-    .AddValidatorsFromAssemblies([catalogAssembly, basketAssembly])
+    .AddMediatRWithAssemblies(catalogAssembly, basketAssembly, orderingAssembly)
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration)

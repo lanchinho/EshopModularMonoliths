@@ -30,6 +30,6 @@ public class BasketRepository(BasketDbContext context)
         return await context.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task<int> SaveChangesAsync(string? userName, CancellationToken cancellationToken = default)
         => await context.SaveChangesAsync(cancellationToken);
 }

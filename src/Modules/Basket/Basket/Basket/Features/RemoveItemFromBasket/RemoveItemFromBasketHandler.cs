@@ -22,7 +22,7 @@ internal class RemoveItemFromBasketHandler(IBasketRepository repository)
     {
         var basket = await repository.GetBasket(command.UserName, false, cancellationToken);
         basket.RemoveItem(command.ProductId);
-        await repository.SaveChangesAsync(cancellationToken);
-        return new RemoveItemFromBasketResult(basket.Id);
+        await repository.SaveChangesAsync(command.UserName, cancellationToken);
+        return new RemoveItemFromBasketResult(Id: basket.Id);
     }
 }

@@ -6,29 +6,30 @@ namespace Basket;
 
 public static class BasketModule
 {
-	public static IServiceCollection AddBasketModule(this IServiceCollection services,
-		IConfiguration configuration)
-	{
-		services.AddScoped<IBasketRepository, BasketRepository>();
-		
-		var connectionString = configuration.GetConnectionString("Database");
+    public static IServiceCollection AddBasketModule(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddScoped<IBasketRepository, BasketRepository>();
+        services.Decorate<IBasketRepository, CachedBasketRepository>();
 
-		services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-		services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        var connectionString = configuration.GetConnectionString("Database");
 
-		services.AddDbContext<BasketDbContext>((sp, options) =>
-		{
-			options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
-			options.UseNpgsql(connectionString);
-		});
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
-		return services;
-	}
+        services.AddDbContext<BasketDbContext>((sp, options) =>
+        {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+            options.UseNpgsql(connectionString);
+        });
 
-	public static IApplicationBuilder UseBasketModule(this IApplicationBuilder app)
-	{
-		app.UseMigration<BasketDbContext>();
+        return services;
+    }
 
-		return app;
-	}
+    public static IApplicationBuilder UseBasketModule(this IApplicationBuilder app)
+    {
+        app.UseMigration<BasketDbContext>();
+
+        return app;
+    }
 }

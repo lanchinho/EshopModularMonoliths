@@ -10,6 +10,10 @@ var orderingAssembly = typeof(OrderingModule).Assembly;
 builder.Services
     .AddCarterWithAssemblies(catalogAssembly, basketAssembly)
     .AddMediatRWithAssemblies(catalogAssembly, basketAssembly, orderingAssembly)
+    .AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    })
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration)

@@ -26,9 +26,10 @@ public static class MassTransitExtensions
                 configurator.Host(configuration["MessageBroker:Host"]!,
                     host =>
                     {
-                        host.Username(configuration["MessageBroker:Username"]!);
+                        host.Username(configuration["MessageBroker:UserName"]!);
                         host.Password(configuration["MessageBroker:Password"]!);
                     });
+                configurator.ConfigureEndpoints(context);
             });
         });
 

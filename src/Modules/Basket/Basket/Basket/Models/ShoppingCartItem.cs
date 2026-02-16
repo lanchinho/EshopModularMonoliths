@@ -8,8 +8,7 @@ public class ShoppingCartItem : Entity<Guid>
     public Guid ProductId { get; private set; } = default!;
     public int Quantity { get; internal set; } = default!;
     public string Color { get; private set; } = default!;
-
-    public decimal Price { get; private set; } = default!;
+    public decimal Price { get; private set; } = 0.0m;
     public string ProductName { get; private set; } = default!;
 
     internal ShoppingCartItem(Guid shoppingCartId, Guid productId, int quantity, string color, decimal price,
@@ -34,5 +33,11 @@ public class ShoppingCartItem : Entity<Guid>
         Color = color;
         Price = price;
         ProductName = productName;
+    }
+
+    public void UpdatePrice(decimal newPrice)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(newPrice);
+        Price = newPrice;
     }
 }

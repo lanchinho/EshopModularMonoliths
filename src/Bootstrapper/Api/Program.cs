@@ -1,3 +1,5 @@
+using Shared.Messaging.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, config) =>
@@ -14,6 +16,7 @@ builder.Services
     {
         options.Configuration = builder.Configuration.GetConnectionString("Redis");
     })
+    .AddMassTransitWithAssemblies(catalogAssembly, basketAssembly)
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration)

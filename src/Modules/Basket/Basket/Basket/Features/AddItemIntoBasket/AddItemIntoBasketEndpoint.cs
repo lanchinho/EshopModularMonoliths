@@ -1,6 +1,6 @@
 ﻿namespace Basket.Basket.Features.AddItemIntoBasket
 {
-    public record AddItemIntoBasketRequest(string UserName, ShoppingCartItemDto ShoppingCartItem);
+    public record AddItemIntoBasketRequest(ShoppingCartItemDto ShoppingCartItem);
 
     public record AddItemIntoBasketResponse(Guid Id);
 

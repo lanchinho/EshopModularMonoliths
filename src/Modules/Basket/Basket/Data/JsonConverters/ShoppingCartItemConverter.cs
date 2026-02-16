@@ -33,5 +33,7 @@ public class ShoppingCartItemConverter : JsonConverter<ShoppingCartItem>
         writer.WriteString("color", value.Color);
         writer.WriteNumber("quantity", value.Quantity);
         writer.WriteNumber("price", value.Price);
+        
+        writer.WriteEndObject();
     }
 }

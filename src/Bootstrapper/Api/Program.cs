@@ -1,3 +1,4 @@
+using Api.SchemeTransformers;
 using Keycloak.AuthServices.Authentication;
 using Shared.Messaging.Extensions;
 
@@ -21,7 +22,7 @@ builder.Services
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration)
-    .AddOpenApi()
+    .AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); })
     .AddExceptionHandler<CustomexceptionHandler>()
     .AddProblemDetails()
     .AddAuthorization()

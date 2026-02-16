@@ -18,9 +18,11 @@
                     })
                 .Produces<AddItemIntoBasketResponse>(StatusCodes.Status201Created)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Add item into Basket")
-                .WithDescription("Add an item to the user's basket.");
+                .WithDescription("Add an item to the user's basket.")
+                .RequireAuthorization();
         }
     }
 }

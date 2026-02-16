@@ -14,9 +14,11 @@
                 })
                 .Produces<DeleteBasketResponse>()
                 .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Delete Basket")
-                .WithDescription("Delete a basket with its products by user name.");
+                .WithDescription("Delete a basket with its products by user name.")
+                .RequireAuthorization();
         }
     }
 }

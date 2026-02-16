@@ -16,10 +16,12 @@
                     })
                 .Produces<RemoveItemFromBasketResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Remove item from basket")
-                .WithSummary("Remove an item from the user's basket");
+                .WithSummary("Remove an item from the user's basket")
+                .RequireAuthorization();
         }
     }
 }

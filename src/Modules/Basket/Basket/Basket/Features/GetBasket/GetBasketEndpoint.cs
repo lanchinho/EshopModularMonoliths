@@ -14,9 +14,11 @@
                 })
                 .Produces<GetBasketResponse>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest)
+                .Produces(StatusCodes.Status401Unauthorized)
                 .Produces(StatusCodes.Status404NotFound)
                 .WithSummary("Get Basket")
-                .WithDescription("Get user's basket");
+                .WithDescription("Get user's basket")
+                .RequireAuthorization();
         }
     }
 }

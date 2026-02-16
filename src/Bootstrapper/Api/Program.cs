@@ -1,3 +1,4 @@
+using Keycloak.AuthServices.Authentication;
 using Shared.Messaging.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,9 @@ builder.Services
     .AddOrderingModule(builder.Configuration)
     .AddOpenApi()
     .AddExceptionHandler<CustomexceptionHandler>()
-    .AddProblemDetails();
+    .AddProblemDetails()
+    .AddAuthorization()
+    .AddKeycloakWebApiAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -37,6 +40,8 @@ app.MapGet("/", () => Results.Redirect("/scalar/v1"))
     .ExcludeFromDescription();
 
 app
+    .UseAuthentication()
+    .UseAuthorization()
     .UseCatalogModule()
     .UseBasketModule()
     .UseOrderingModule()

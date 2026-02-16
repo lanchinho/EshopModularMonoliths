@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: Bootstrapper/Api/Dockerfile
     depends_on:
-      - eshopdb  
-
+      - eshopdb
+  
   eshopdb:
     container_name: eshopdb
     environment:
@@ -18,7 +18,7 @@ services:
     volumes:
       - postgres_eshopdb:/var/lib/postgres/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d EShopDb"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d EShopDb" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,14 +29,24 @@ services:
     restart: always
     ports:
       - "6379:6379"
-      
+  
   seq:
     container_name: seq
     environment:
       - ACCEPT_EULA=Y
-      - SEQ_FIRSTRUN_NOAUTHENTICATION=true      
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=true
     restart: always
     ports:
       - "5341:5341"
-      - "9091:80" 
+      - "9091:80"
   
+  messagebus:
+    container_name: messagebus
+    hostname: ecommerce-mq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"

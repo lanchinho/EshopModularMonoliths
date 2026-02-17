@@ -1,21 +1,34 @@
 namespace Ordering.Orders.Features.GetOders;
 
-public record GetOrderByIdQuery(Guid Id) : IQuery<GetOrderByIdResult>;
+public record GetOrdersQuery(PaginationRequest PaginationRequest)
+    : IQuery<GetOrdersResult>;
 
-public record GetOrderByIdResult(OrderDto Order);
+public record GetOrdersResult(PaginatedResult<OrderDto> Orders);
 
-internal class GetOrderByIdHandler(OrderingDbContext dbContext)
-    : IQueryHandler<GetOrderByIdQuery, GetOrderByIdResult>
+internal class GetOrdersHandler(OrderingDbContext dbContext)
+    : IQueryHandler<GetOrdersQuery, GetOrdersResult>
 {
-    public async Task<GetOrderByIdResult> Handle(GetOrderByIdQuery query, CancellationToken cancellationToken)
+    public async Task<GetOrdersResult> Handle(GetOrdersQuery query, CancellationToken cancellationToken)
     {
-        var order = await dbContext.Orders
+        var pageIndex = query.PaginationRequest.PageIndex;
+        var pageSize = query.PaginationRequest.PageSize;
+        var totalCount = await dbContext.Orders.LongCountAsync(cancellationToken);
+
+        var orders = await dbContext.Orders
             .AsNoTracking()
             .Include(x => x.Items)
-            .SingleOrDefaultAsync(p => p.Id == query.Id, cancellationToken);
+            .OrderBy(p => p.OrderName)
+            .Skip(pageSize * pageIndex)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
 
-        return order is null
-            ? throw new OrderNotFoundException(query.Id)
-            : new GetOrderByIdResult(order.Adapt<OrderDto>());
+        var orderDtos = orders.Adapt<List<OrderDto>>();
+
+        return new(
+            new PaginatedResult<OrderDto>(
+                pageIndex,
+                pageSize,
+                totalCount,
+                orderDtos));
     }
 }

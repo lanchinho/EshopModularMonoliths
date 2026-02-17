@@ -1,6 +1,27 @@
 namespace Ordering.Orders.Features.DeleteOrder;
 
-public class DeleteOrderEndpoint
+public record DeleteOrderResponse(bool IsSuccess);
+
+public class DeleteOrderEndpoints : ICarterModule
 {
-    
+    public void AddRoutes(IEndpointRouteBuilder app)
+    {
+        app.MapDelete("/orders/{id}", async (Guid id, ISender sender) =>
+            {
+                var result = await sender.Send(new DeleteOrderCommand(id));
+
+                var response = result.Adapt<DeleteOrderResponse>();
+
+                return Results.Ok(response);
+            })
+            .WithName("DeleteOrder")
+            .Produces<DeleteOrderResponse>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .WithSummary("Delete Order")
+            .WithDescription("Cancel the order placed by the customer")
+            .RequireAuthorization();
+    }
 }

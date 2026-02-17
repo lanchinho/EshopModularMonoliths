@@ -1,15 +1,12 @@
-using FluentValidation;
-using FluentValidation.Validators;
-
 namespace Ordering.Orders.Features.CreateOrder;
 
 public record CreateOrderCommand(OrderDto Order) : ICommand<CreateOrderResult>;
 
 public record CreateOrderResult(Guid OrderId);
 
-public class CreateORderCommandValidator : AbstractValidator<CreateOrderCommand>
+public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 {
-    public CreateORderCommandValidator()
+    public CreateOrderCommandValidator()
     {
         RuleFor(x => x.Order.OrderName)
             .NotEmpty()

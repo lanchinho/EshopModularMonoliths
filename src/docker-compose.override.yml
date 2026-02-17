@@ -64,7 +64,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      #- ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTPS_PORTS=8081 #comment this line when on linux, in case you don´t have the cert configured in your dev environment
       - ConnectionStrings__Database=Server=eshopdb;Port=5432;Database=EShopDb;User Id=postgres;Password=postgres;Include Error Detail=true
       - ConnectionStrings__Redis=distributedcache:6379
       - MessageBroker__Host=amqp://ecommerce-mq:5672
@@ -93,10 +93,10 @@ services:
       - identity
     ports:
       - "6000:8080"
-      #- "6060:8081" linux workarounds...
+      - "6060:8081"  # comment this line when on linux without dev certificate 
     volumes:
-      #      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro whhen on windows...
-      #      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-
-      - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
-      #- ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+#     USE those when on linux, make sure to create .aspnet and .microsoft in your user folder /home/youruserfolder  
+#     - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro  
+#     - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro

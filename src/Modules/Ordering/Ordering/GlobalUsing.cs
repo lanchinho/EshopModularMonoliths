@@ -1,9 +1,14 @@
-﻿global using MediatR;
+﻿global using System.Reflection;
+global using MediatR;
 global using Microsoft.AspNetCore.Builder;
+global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
+global using Ordering.Data;
 global using Ordering.Orders.Events;
 global using Ordering.Orders.Models;
 global using Ordering.Orders.ValueObjects;
+global using Shared.Data;
+global using Shared.Data.Interceptors;
 global using Shared.DDD;

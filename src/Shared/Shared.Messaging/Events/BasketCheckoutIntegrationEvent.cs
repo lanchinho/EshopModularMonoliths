@@ -12,6 +12,7 @@ public record BasketCheckoutIntegrationEvent : IntegrationEvent
     public string AddressLine { get; set; } = default!;
     public string Country { get; set; } = default!;
     public string State { get; set; } = default!;
+    public string ZipCode { get; set; } = default!;
 
     public string CardName { get; set; } = default!;
     public string CardNumber { get; set; } = default!;

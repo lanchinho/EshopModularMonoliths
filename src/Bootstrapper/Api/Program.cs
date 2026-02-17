@@ -18,7 +18,7 @@ builder.Services
     {
         options.Configuration = builder.Configuration.GetConnectionString("Redis");
     })
-    .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly)
+    .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly, orderingAssembly)
     .AddCatalogModule(builder.Configuration)
     .AddBasketModule(builder.Configuration)
     .AddOrderingModule(builder.Configuration)
